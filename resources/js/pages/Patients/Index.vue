@@ -2,7 +2,7 @@
 import { Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
 
-defineProps<{ clients: Array<Record<string, any>> }>();
+defineProps<{ patients: Array<Record<string, any>> }>();
 </script>
 
 <template>
@@ -10,9 +10,9 @@ defineProps<{ clients: Array<Record<string, any>> }>();
         <div class="flex justify-between">
             <h1 class="text-xl font-bold">Clientes</h1>
             <Link
-                :href="route('clients.create')"
+                :href="route('patients.create')"
                 as="button"
-                class="rounded-lg bg-blue-500 px-4 py-2 font-semibold text-white cursor-pointer hover:bg-blue-600"
+                class="cursor-pointer rounded-lg bg-blue-500 px-4 py-2 font-semibold text-white hover:bg-blue-600"
             >
                 Nuevo Cliente
             </Link>
@@ -28,24 +28,35 @@ defineProps<{ clients: Array<Record<string, any>> }>();
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="client in clients" :key="client.id" class="border-b">
-                    <td class="py-3 pr-2 text-nowrap">{{ client.name }}</td>
-                    <td class="py-3 pr-2 text-nowrap text-gray-400">
-                        {{ client.phone }}
+                <tr
+                    v-for="patient in patients"
+                    :key="patient.id"
+                    class="border-b"
+                >
+                    <td class="py-3 pr-2 text-nowrap">
+                        <Link
+                            :href="route('patients.show', patient.id)"
+                            class="hover:underline"
+                        >
+                            {{ patient.name }}
+                        </Link>
                     </td>
                     <td class="py-3 pr-2 text-nowrap text-gray-400">
-                        {{ client.email }}
+                        {{ patient.phone }}
                     </td>
-                    <td class="py-3 pr-2 text-gray-400">{{ client.notes }}</td>
+                    <td class="py-3 pr-2 text-nowrap text-gray-400">
+                        {{ patient.email }}
+                    </td>
+                    <td class="py-3 pr-2 text-gray-400">{{ patient.notes }}</td>
                     <td class="flex gap-3 py-3">
                         <Link
-                            :href="route('clients.edit', client.id)"
+                            :href="route('patients.edit', patient.id)"
                             class="font-semibold text-blue-500 hover:text-blue-600"
                         >
                             Editar
                         </Link>
                         <Link
-                            :href="route('clients.destroy', client.id)"
+                            :href="route('patients.destroy', patient.id)"
                             method="delete"
                             as="button"
                             class="cursor-pointer font-semibold text-blue-500 hover:text-blue-600"

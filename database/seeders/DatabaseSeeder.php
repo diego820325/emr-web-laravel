@@ -2,7 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Client;
+use App\Models\Patient;
+use App\Models\Record;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -21,6 +22,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
-        Client::factory(100)->create();
+        Patient::factory(100)->has(Record::factory()->count(5))->create();
     }
 }
