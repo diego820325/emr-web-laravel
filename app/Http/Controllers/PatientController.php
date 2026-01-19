@@ -20,7 +20,7 @@ class PatientController extends Controller
     public function show(Patient $patient)
     {
         return Inertia::render('Patients/Show', [
-            'patient' => $patient->load('records'),
+            'patient' => $patient->load(['records', 'records.attachments']),
         ]);
     }
 

@@ -57,6 +57,18 @@ defineProps<{ patient: Record<string, any> }>();
         <div v-for="record in patient.records" :key="record.id">
             <div class="font-semibold">{{ record.date }}</div>
             <p>{{ record.notes }}</p>
+            <div class="flex gap-2">
+                <a
+                    :href="route('attachments.download', [attachment.id])"
+                    v-for="attachment in record.attachments"
+                    :key="attachment.id"
+                    class="cursor-pointer rounded-lg bg-blue-50 px-5 py-1 text-blue-500 hover:bg-blue-100"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    {{ attachment.name }}
+                </a>
+            </div>
             <div class="flex gap-3">
                 [
                 <Link

@@ -28,6 +28,30 @@ defineProps<{ patient: Record<string, any> }>();
                     class="min-h-40 rounded-lg bg-gray-100 p-2"
                 ></textarea>
             </div>
+            <div class="flex flex-col gap-2">
+                <label for="date" class="font-semibold">Archivo 1</label>
+                <input
+                    type="file"
+                    name="file1"
+                    class="rounded-lg bg-gray-100 p-2"
+                />
+            </div>
+            <div class="flex flex-col gap-2">
+                <label for="date" class="font-semibold">Archivo 2</label>
+                <input
+                    type="file"
+                    name="file2"
+                    class="rounded-lg bg-gray-100 p-2"
+                />
+            </div>
+            <div class="flex flex-col gap-2">
+                <label for="date" class="font-semibold">Archivo 3</label>
+                <input
+                    type="file"
+                    name="file3"
+                    class="rounded-lg bg-gray-100 p-2"
+                />
+            </div>
             <div class="flex justify-center gap-3">
                 <Link
                     :href="route('patients.show', patient.id)"

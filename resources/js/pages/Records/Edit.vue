@@ -30,6 +30,54 @@ defineProps<{ record: Record<string, any> }>();
                     :value="record.notes"
                 ></textarea>
             </div>
+            <div class="flex flex-col gap-2">
+                <div
+                    class="flex gap-2"
+                    v-for="attachment in record.attachments"
+                    :key="attachment.id"
+                >
+                    <a
+                        :href="route('attachments.download', [attachment.id])"
+                        class="cursor-pointer rounded-lg bg-blue-50 px-5 py-1 text-blue-500 hover:bg-blue-100"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {{ attachment.name }}
+                    </a>
+                    [
+                    <Link
+                        :href="route('attachments.destroy', attachment.id)"
+                        class="cursor-pointer font-semibold text-blue-500 hover:text-blue-600"
+                        method="delete"
+                        >Eliminar</Link
+                    >
+                    ]
+                </div>
+            </div>
+            <div class="flex flex-col gap-2">
+                <label for="date" class="font-semibold">Archivo 1</label>
+                <input
+                    type="file"
+                    name="file1"
+                    class="rounded-lg bg-gray-100 p-2"
+                />
+            </div>
+            <div class="flex flex-col gap-2">
+                <label for="date" class="font-semibold">Archivo 2</label>
+                <input
+                    type="file"
+                    name="file2"
+                    class="rounded-lg bg-gray-100 p-2"
+                />
+            </div>
+            <div class="flex flex-col gap-2">
+                <label for="date" class="font-semibold">Archivo 3</label>
+                <input
+                    type="file"
+                    name="file3"
+                    class="rounded-lg bg-gray-100 p-2"
+                />
+            </div>
             <div class="flex justify-center gap-3">
                 <Link
                     :href="route('patients.show', record.patient.id)"
