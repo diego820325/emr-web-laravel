@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { Form, Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
+import { QuillEditor } from '@vueup/vue-quill';
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
+import { ref } from 'vue';
 
-defineProps<{ record: Record<string, any> }>();
+const props = defineProps<{ record: Record<string, any> }>();
+
+const notes = ref(props.record.notes);
 </script>
 
 <template>
@@ -26,9 +31,16 @@ defineProps<{ record: Record<string, any> }>();
                 <label for="name" class="font-semibold">Notas</label>
                 <textarea
                     name="notes"
-                    class="min-h-40 rounded-lg bg-gray-100 p-2"
-                    :value="record.notes"
+                    class="min-h-40 rounded-lg bg-gray-100 p-2 hidden"
+                    v-model="notes"
                 ></textarea>
+                <QuillEditor
+                    theme="snow"
+                    toolbar="full"
+                    contentType="html"
+                    class="min-h-40"
+                    v-model:content="notes"
+                />
             </div>
             <div class="flex flex-col gap-2">
                 <div

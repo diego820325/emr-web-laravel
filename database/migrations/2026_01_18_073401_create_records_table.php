@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('records', function (Blueprint $table) {
             $table->id();
             $table->date('date');
-            $table->text('notes');
+            $table->longText('notes');
             $table->foreignId('patient_id')->constrained();
             $table->timestamps();
         });

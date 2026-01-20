@@ -56,7 +56,7 @@ defineProps<{ patient: Record<string, any> }>();
         <h2 class="text-lg font-bold">Seguimiento</h2>
         <div v-for="record in patient.records" :key="record.id">
             <div class="font-semibold">{{ record.date }}</div>
-            <p>{{ record.notes }}</p>
+            <p v-html="record.notes"></p>
             <div class="flex gap-2">
                 <a
                     :href="route('attachments.download', [attachment.id])"
