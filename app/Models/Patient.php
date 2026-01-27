@@ -17,4 +17,9 @@ class Patient extends Model
     {
         return $this->hasMany(Record::class)->orderBy('date', 'desc');
     }
+
+    public function customAttributeValues()
+    {
+        return $this->hasMany(CustomAttributeValue::class);
+    }
 }
