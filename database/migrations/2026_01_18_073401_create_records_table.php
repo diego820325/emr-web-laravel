@@ -17,6 +17,7 @@ return new class extends Migration
             $table->longText('notes');
             $table->foreignId('patient_id')->constrained();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
