@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AttachmentController;
+use App\Http\Controllers\CustomAttributeController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\RecordController;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,7 @@ Route::get('dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('section/{section}/custom-attributes', CustomAttributeController::class)->except('show');
     Route::resource('patients', PatientController::class);
 
     Route::prefix('patients/{patient}/records')->name('patients.records.')->group(function () {
