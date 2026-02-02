@@ -1,14 +1,18 @@
 <script setup lang="ts">
+import { Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
-import { Form, Link } from '@inertiajs/vue3';
 
-const props = defineProps<{
+defineProps<{
     customAttributes: Record<string, any>;
+    recordCustomAttributes: Record<string, any>;
     patient: Record<string, any>;
 }>();
 
-const getCustomAttributeValue = (customAttribute: Record<string, any>) => {
-    const attributeValues = props.patient.custom_attribute_values.filter(
+const getCustomAttributeValue = (
+    model: Record<string, any>,
+    customAttribute: Record<string, any>,
+) => {
+    const attributeValues = model.custom_attribute_values.filter(
         (custom_attribute_value: Record<string, any>) =>
             custom_attribute_value.custom_attribute_id === customAttribute.id,
     );
@@ -63,11 +67,7 @@ const getCustomAttributeValue = (customAttribute: Record<string, any>) => {
             ><< Volver</Link
         >
         <h1 class="text-xl font-bold">{{ patient.name }}</h1>
-        <Form
-            :action="route('patients.store')"
-            method="post"
-            class="flex flex-col gap-5"
-        >
+        <div class="flex flex-col gap-5">
             <div class="flex flex-col gap-2">
                 <div class="font-semibold">Teléfono</div>
                 <p>{{ patient.phone }}</p>
@@ -87,15 +87,19 @@ const getCustomAttributeValue = (customAttribute: Record<string, any>) => {
             >
                 <div class="font-semibold">{{ customAttribute.question }}</div>
                 <p v-if="customAttribute.custom_attribute_type_id === 5">
-                    {{ getCustomAttributeValue(customAttribute) ? 'Si' : 'No' }}
+                    {{
+                        getCustomAttributeValue(patient, customAttribute)
+                            ? 'Si'
+                            : 'No'
+                    }}
                 </p>
                 <p
                     v-else-if="customAttribute.custom_attribute_type_id === 3"
-                    v-html="getCustomAttributeValue(customAttribute)"
+                    v-html="getCustomAttributeValue(patient, customAttribute)"
                 ></p>
 
                 <p v-else>
-                    {{ getCustomAttributeValue(customAttribute) }}
+                    {{ getCustomAttributeValue(patient, customAttribute) }}
                 </p>
             </div>
             <div class="flex justify-center gap-3">
@@ -118,12 +122,34 @@ const getCustomAttributeValue = (customAttribute: Record<string, any>) => {
                     >Añadir nota</Link
                 >
             </div>
-        </Form>
+        </div>
 
         <h2 class="text-lg font-bold">Seguimiento</h2>
         <div v-for="record in patient.records" :key="record.id">
             <div class="font-semibold">{{ record.date }}</div>
             <p v-html="record.notes"></p>
+            <div
+                class="flex flex-col gap-2"
+                v-for="customAttribute in recordCustomAttributes"
+                :key="customAttribute.id"
+            >
+                <div class="font-semibold">{{ customAttribute.question }}</div>
+                <p v-if="customAttribute.custom_attribute_type_id === 5">
+                    {{
+                        getCustomAttributeValue(record, customAttribute)
+                            ? 'Si'
+                            : 'No'
+                    }}
+                </p>
+                <p
+                    v-else-if="customAttribute.custom_attribute_type_id === 3"
+                    v-html="getCustomAttributeValue(record, customAttribute)"
+                ></p>
+
+                <p v-else>
+                    {{ getCustomAttributeValue(record, customAttribute) }}
+                </p>
+            </div>
             <div class="flex gap-2">
                 <a
                     :href="route('attachments.download', [attachment.id])"

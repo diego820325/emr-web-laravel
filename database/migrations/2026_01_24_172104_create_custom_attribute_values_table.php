@@ -20,7 +20,8 @@ return new class extends Migration
             $table->boolean('boolean_value')->nullable();
             $table->date('date_value')->nullable();
             $table->dateTime('date_time_value')->nullable();
-            $table->foreignId('patient_id')->constrained();
+            $table->foreignId('patient_id')->nullable()->constrained();
+            $table->foreignId('record_id')->nullable()->constrained();
             $table->foreignId('custom_attribute_id')->constrained();
             $table->foreignId('custom_attribute_option_id')->nullable()->constrained();
             $table->timestamps();

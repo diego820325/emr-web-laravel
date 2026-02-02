@@ -58,7 +58,6 @@ const htmlModels: Record<string, any> = ref({});
 
 for (const customAttribute of props.customAttributes) {
     if (customAttribute.custom_attribute_type_id === 3) {
-        console.log(getCustomAttributeValue(customAttribute));
         htmlModels.value[customAttribute.id] =
             getCustomAttributeValue(customAttribute);
     }

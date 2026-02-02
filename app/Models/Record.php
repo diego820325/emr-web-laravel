@@ -22,4 +22,9 @@ class Record extends Model
     {
         return $this->hasMany(Attachment::class);
     }
+
+    public function customAttributeValues()
+    {
+        return $this->hasMany(CustomAttributeValue::class);
+    }
 }

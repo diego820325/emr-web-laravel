@@ -18,8 +18,8 @@ return new class extends Migration
         });
 
         DB::table('sections')->insert([
-            ['name' => 'Patients'],
-            ['name' => 'Records'],
+            ['name' => 'Clientes'],
+            ['name' => 'Notas'],
         ]);
     }
 

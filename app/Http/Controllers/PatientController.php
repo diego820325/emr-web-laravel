@@ -22,7 +22,14 @@ class PatientController extends Controller
     {
         return Inertia::render('Patients/Show', [
             'customAttributes' => CustomAttribute::where('section_id', 1)->get(),
-            'patient' => $patient->load(['records.attachments', 'customAttributeValues.customAttribute', 'customAttributeValues.customAttributeOption']),
+            'recordCustomAttributes' => CustomAttribute::where('section_id', 2)->get(),
+            'patient' => $patient->load([
+                'records.attachments',
+                'customAttributeValues.customAttribute',
+                'customAttributeValues.customAttributeOption',
+                'records.customAttributeValues.customAttribute',
+                'records.customAttributeValues.customAttributeOption'
+            ]),
         ]);
     }
 
@@ -100,7 +107,7 @@ class PatientController extends Controller
             }
         }
 
-        return redirect()->route('patients.index');
+        return redirect()->route('patients.show', $patient);
     }
 
     public function destroy(Patient $patient)
