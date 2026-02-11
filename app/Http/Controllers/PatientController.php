@@ -12,7 +12,7 @@ class PatientController extends Controller
     public function index()
     {
         $data = [
-            'patients' => Patient::all(),
+            'patients' => Patient::orderBy('name')->get(),
         ];
 
         return Inertia::render('Patients/Index', $data);

@@ -1,8 +1,16 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import { ref } from 'vue';
+import { FilterMatchMode } from '@primevue/core/api';
 
 defineProps<{ patients: Array<Record<string, any>> }>();
+
+const filters = ref({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+});
 </script>
 
 <template>
@@ -17,55 +25,67 @@ defineProps<{ patients: Array<Record<string, any>> }>();
                 Nuevo Cliente
             </Link>
         </div>
-        <table>
-            <thead>
-                <tr class="border-b text-left font-semibold">
-                    <th class="pb-3">Nombre</th>
-                    <th class="pb-3">Teléfono</th>
-                    <th class="pb-3">Correo</th>
-                    <th class="pb-3">Notas</th>
-                    <th class="pb-3"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr
-                    v-for="patient in patients"
-                    :key="patient.id"
-                    class="border-b"
-                >
-                    <td class="py-3 pr-2 text-nowrap">
+        <DataTable
+            v-model:filters="filters"
+            :value="patients"
+            paginator
+            :rows="50"
+            :globalFilterFields="['name', 'phone', 'email', 'notes']"
+        >
+            <template #header>
+                <div class="flex gap-1 justify-end items-center">
+                    <span>Buscar:</span>
+                    <input
+                        type="text"
+                        class="rounded-lg bg-gray-100 p-2"
+                        v-model="filters['global'].value"
+                    />
+                </div>
+            </template>
+            <template #empty
+                >No hay clientes que coincidan con la búsqueda</template
+            >
+            <Column field="name" header="Nombre" class="text-black">
+                <template #body="slotProps">
+                    <Link
+                        :href="route('patients.show', slotProps.data.id)"
+                        class="hover:underline"
+                    >
+                        {{ slotProps.data.name }}
+                    </Link>
+                </template>
+            </Column>
+            <Column
+                field="phone"
+                header="Teléfono"
+                class="text-gray-400"
+            ></Column>
+            <Column
+                field="email"
+                header="Correo"
+                class="text-gray-400"
+            ></Column>
+            <Column field="notes" header="Notas" class="text-gray-400"></Column>
+            <Column field="id">
+                <template #body="slotProps">
+                    <div class="flex gap-3">
                         <Link
-                            :href="route('patients.show', patient.id)"
-                            class="hover:underline"
-                        >
-                            {{ patient.name }}
-                        </Link>
-                    </td>
-                    <td class="py-3 pr-2 text-nowrap text-gray-400">
-                        {{ patient.phone }}
-                    </td>
-                    <td class="py-3 pr-2 text-nowrap text-gray-400">
-                        {{ patient.email }}
-                    </td>
-                    <td class="py-3 pr-2 text-gray-400">{{ patient.notes }}</td>
-                    <td class="flex gap-3 py-3">
-                        <Link
-                            :href="route('patients.edit', patient.id)"
+                            :href="route('patients.edit', slotProps.data.id)"
                             class="font-semibold text-blue-500 hover:text-blue-600"
                         >
                             Editar
                         </Link>
                         <Link
-                            :href="route('patients.destroy', patient.id)"
+                            :href="route('patients.destroy', slotProps.data.id)"
                             method="delete"
                             as="button"
                             class="cursor-pointer font-semibold text-blue-500 hover:text-blue-600"
                         >
                             Borrar
                         </Link>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </div>
+                </template>
+            </Column>
+        </DataTable>
     </div>
 </template>
