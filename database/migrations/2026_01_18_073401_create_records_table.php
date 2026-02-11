@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('records', function (Blueprint $table) {
             $table->id();
             $table->date('date');
-            $table->longText('notes');
+            $table->longText('notes')->nullable();
             $table->foreignId('patient_id')->constrained();
             $table->timestamps();
             $table->softDeletes();

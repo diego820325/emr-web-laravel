@@ -5,7 +5,10 @@ import { QuillEditor } from '@vueup/vue-quill';
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import { ref } from 'vue';
 
-const props = defineProps<{ customAttributes: Array<Record<string, any>> }>();
+const props = defineProps<{
+    customAttributes: Array<Record<string, any>>;
+    errors: Record<string, any>;
+}>();
 
 const htmlModels: Record<string, any> = ref({});
 
@@ -25,12 +28,16 @@ for (const customAttribute of props.customAttributes) {
             class="flex flex-col gap-5"
         >
             <div class="flex flex-col gap-2">
-                <label for="name" class="font-semibold">Nombre</label>
+                <label for="name" class="font-semibold">
+                    Nombre
+                    <span class="text-red-500">*</span>
+                </label>
                 <input
                     type="text"
                     name="name"
                     class="rounded-lg bg-gray-100 p-2"
                 />
+                <div class="text-xs text-red-500" v-if="errors.name">{{ errors.name }}</div>
             </div>
             <div class="flex flex-col gap-2">
                 <label for="name" class="font-semibold">Teléfono</label>

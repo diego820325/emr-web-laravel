@@ -8,6 +8,7 @@ import { ref } from 'vue';
 const props = defineProps<{
     patient: Record<string, any>;
     customAttributes: Array<Record<string, any>>;
+    errors: Record<string, any>;
 }>();
 
 const notes = ref('');
@@ -29,12 +30,18 @@ for (const customAttribute of props.customAttributes) {
             class="flex flex-col gap-5"
         >
             <div class="flex flex-col gap-2">
-                <label for="date" class="font-semibold">Fecha</label>
+                <label for="date" class="font-semibold">
+                    Fecha
+                    <span class="text-red-500">*</span>
+                </label>
                 <input
                     type="date"
                     name="date"
                     class="rounded-lg bg-gray-100 p-2"
                 />
+                <div class="text-xs text-red-500" v-if="errors.date">
+                    {{ errors.date }}
+                </div>
             </div>
             <div class="flex flex-col gap-2">
                 <label for="name" class="font-semibold">Notas</label>

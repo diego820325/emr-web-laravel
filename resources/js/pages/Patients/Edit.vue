@@ -8,6 +8,7 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css';
 const props = defineProps<{
     patient: Record<string, any>;
     customAttributes: Array<Record<string, any>>;
+    errors: Record<string, any>;
 }>();
 
 const getCustomAttributeValue = (customAttribute: Record<string, any>) => {
@@ -73,13 +74,19 @@ for (const customAttribute of props.customAttributes) {
             class="flex flex-col gap-5"
         >
             <div class="flex flex-col gap-2">
-                <label for="name" class="font-semibold">Nombre</label>
+                <label for="name" class="font-semibold">
+                    Nombre
+                    <span class="text-red-500">*</span>
+                </label>
                 <input
                     type="text"
                     name="name"
                     class="rounded-lg bg-gray-100 p-2"
-                    :value="patient.name"
+                    :defaultValue="patient.name"
                 />
+                <div class="text-xs text-red-500" v-if="errors.name">
+                    {{ errors.name }}
+                </div>
             </div>
             <div class="flex flex-col gap-2">
                 <label for="name" class="font-semibold">Teléfono</label>
@@ -87,7 +94,7 @@ for (const customAttribute of props.customAttributes) {
                     type="text"
                     name="phone"
                     class="rounded-lg bg-gray-100 p-2"
-                    :value="patient.phone"
+                    :defaultValue="patient.phone"
                 />
             </div>
             <div class="flex flex-col gap-2">
@@ -96,7 +103,7 @@ for (const customAttribute of props.customAttributes) {
                     type="text"
                     name="email"
                     class="rounded-lg bg-gray-100 p-2"
-                    :value="patient.email"
+                    :defaultValue="patient.email"
                 />
             </div>
             <div class="flex flex-col gap-2">
@@ -120,7 +127,7 @@ for (const customAttribute of props.customAttributes) {
                     :name="customAttribute.id"
                     class="rounded-lg bg-gray-100 p-2"
                     v-if="customAttribute.custom_attribute_type_id === 1"
-                    :value="getCustomAttributeValue(customAttribute)"
+                    :defaultValue="getCustomAttributeValue(customAttribute)"
                 />
                 <textarea
                     :name="customAttribute.id"
@@ -147,7 +154,7 @@ for (const customAttribute of props.customAttributes) {
                     :name="customAttribute.id"
                     class="w-32 rounded-lg bg-gray-100 p-2"
                     v-if="customAttribute.custom_attribute_type_id === 4"
-                    :value="getCustomAttributeValue(customAttribute)"
+                    :defaultValue="getCustomAttributeValue(customAttribute)"
                 />
                 <div
                     v-if="customAttribute.custom_attribute_type_id === 5"
@@ -159,7 +166,7 @@ for (const customAttribute of props.customAttributes) {
                             :name="customAttribute.id"
                             class="rounded-lg bg-gray-100 p-2"
                             :value="1"
-                            :checked="
+                            :defaultChecked="
                                 getCustomAttributeValue(customAttribute) === 1
                             "
                         />
@@ -171,6 +178,9 @@ for (const customAttribute of props.customAttributes) {
                             :name="customAttribute.id"
                             class="rounded-lg bg-gray-100 p-2"
                             :value="0"
+                            :defaultChecked="
+                                getCustomAttributeValue(customAttribute) === 0
+                            "
                         />
                         No
                     </div>
@@ -180,25 +190,26 @@ for (const customAttribute of props.customAttributes) {
                     :name="customAttribute.id"
                     class="w-42 rounded-lg bg-gray-100 p-2"
                     v-if="customAttribute.custom_attribute_type_id === 6"
-                    :value="getCustomAttributeValue(customAttribute)"
+                    :defaultValue="getCustomAttributeValue(customAttribute)"
                 />
                 <input
                     type="datetime-local"
                     :name="customAttribute.id"
                     class="w-52 rounded-lg bg-gray-100 p-2"
                     v-if="customAttribute.custom_attribute_type_id === 7"
-                    :value="getCustomAttributeValue(customAttribute)"
+                    :defaultValue="getCustomAttributeValue(customAttribute)"
                 />
                 <select
                     :name="customAttribute.id"
                     class="rounded-lg bg-gray-100 p-2"
                     v-if="customAttribute.custom_attribute_type_id === 8"
                 >
+                    <option value="">-- Seleccione --</option>
                     <option
                         v-for="option in customAttribute.options"
                         :key="option.id"
                         :value="option.id"
-                        :selected="
+                        :defaultSelected="
                             getCustomAttributeValue(customAttribute) ===
                             option.id
                         "
@@ -216,7 +227,7 @@ for (const customAttribute of props.customAttributes) {
                             :name="customAttribute.id"
                             class="rounded-lg bg-gray-100 p-2"
                             :value="option.id"
-                            :checked="
+                            :defaultChecked="
                                 getCustomAttributeValue(customAttribute) ===
                                 option.id
                             "
@@ -234,7 +245,7 @@ for (const customAttribute of props.customAttributes) {
                             :name="`${customAttribute.id}[]`"
                             class="rounded-lg bg-gray-100 p-2"
                             :value="option.id"
-                            :checked="
+                            :defaultChecked="
                                 getCustomAttributeValue(
                                     customAttribute,
                                 ).includes(option.id)

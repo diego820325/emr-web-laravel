@@ -44,6 +44,10 @@ class PatientController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+        ]);
+
         $patient = Patient::create($request->only(['name', 'phone', 'email', 'notes']));
 
         foreach ($request->except(['name', 'phone', 'email', 'notes']) as $attributeId => $formValue) {
@@ -81,6 +85,10 @@ class PatientController extends Controller
 
     public function update(Patient $patient, Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+        ]);
+
         $patient->update($request->only(['name', 'phone', 'email', 'notes']));
 
         $patient->customAttributeValues()->delete();
