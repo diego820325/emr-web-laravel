@@ -13,10 +13,10 @@ import { Form, Head } from '@inertiajs/vue3';
 
 <template>
     <AuthBase
-        title="Create an account"
-        description="Enter your details below to create your account"
+        title="Crear una cuenta"
+        description="Ingresa tu información para crear tu cuenta"
     >
-        <Head title="Register" />
+        <Head title="Registrarme" />
 
         <Form
             v-bind="store.form()"
@@ -26,7 +26,7 @@ import { Form, Head } from '@inertiajs/vue3';
         >
             <div class="grid gap-6">
                 <div class="grid gap-2">
-                    <Label for="name">Name</Label>
+                    <Label for="name">Nombre</Label>
                     <Input
                         id="name"
                         type="text"
@@ -35,13 +35,13 @@ import { Form, Head } from '@inertiajs/vue3';
                         :tabindex="1"
                         autocomplete="name"
                         name="name"
-                        placeholder="Full name"
+                        placeholder="Nombre completo"
                     />
                     <InputError :message="errors.name" />
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="email">Email address</Label>
+                    <Label for="email">Correo electrónico</Label>
                     <Input
                         id="email"
                         type="email"
@@ -55,7 +55,7 @@ import { Form, Head } from '@inertiajs/vue3';
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="password">Password</Label>
+                    <Label for="password">Contraseña</Label>
                     <Input
                         id="password"
                         type="password"
@@ -63,13 +63,15 @@ import { Form, Head } from '@inertiajs/vue3';
                         :tabindex="3"
                         autocomplete="new-password"
                         name="password"
-                        placeholder="Password"
+                        placeholder="Contraseña"
                     />
                     <InputError :message="errors.password" />
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="password_confirmation">Confirm password</Label>
+                    <Label for="password_confirmation"
+                        >Confirmar contraseña</Label
+                    >
                     <Input
                         id="password_confirmation"
                         type="password"
@@ -77,30 +79,30 @@ import { Form, Head } from '@inertiajs/vue3';
                         :tabindex="4"
                         autocomplete="new-password"
                         name="password_confirmation"
-                        placeholder="Confirm password"
+                        placeholder="Confirmar contraseña"
                     />
                     <InputError :message="errors.password_confirmation" />
                 </div>
 
                 <Button
                     type="submit"
-                    class="mt-2 w-full"
+                    class="w-full cursor-pointer rounded-lg bg-blue-500 px-4 py-2 font-semibold text-white hover:bg-blue-600"
                     tabindex="5"
                     :disabled="processing"
                     data-test="register-user-button"
                 >
                     <Spinner v-if="processing" />
-                    Create account
+                    Crear cuenta
                 </Button>
             </div>
 
             <div class="text-center text-sm text-muted-foreground">
-                Already have an account?
+                Ya tienes una cuenta?
                 <TextLink
                     :href="login()"
-                    class="underline underline-offset-4"
+                    class="text-sm font-semibold !text-blue-500 hover:text-blue-600"
                     :tabindex="6"
-                    >Log in</TextLink
+                    >Ingresar</TextLink
                 >
             </div>
         </Form>

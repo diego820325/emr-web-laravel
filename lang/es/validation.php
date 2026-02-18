@@ -159,5 +159,7 @@ return [
     'attributes' => [
         'name' => 'nombre',
         'date' => 'fecha',
+        'email' => 'correo electrónico',
+        'password' => 'contraseña',
     ],
 ];
