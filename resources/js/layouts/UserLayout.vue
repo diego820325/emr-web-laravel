@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
+import { logout } from '@/routes';
+
+const handleLogout = () => {
+    router.flushAll();
+};
 </script>
 
 <template>
     <div class="flex flex-col">
-        <div class="flex gap-8 pt-5 justify-center">
+        <div class="flex justify-center gap-8 pt-5">
             <Link
                 :href="route('patients.index')"
                 class="font-semibold text-blue-500 hover:text-blue-600"
@@ -21,6 +26,14 @@ import { route } from 'ziggy-js';
                 class="font-semibold text-blue-500 hover:text-blue-600"
                 >Personalizar Notas</Link
             >
+            <Link
+                class="font-semibold text-blue-500 hover:text-blue-600 cursor-pointer"
+                :href="logout()"
+                @click="handleLogout"
+                as="button"
+            >
+                Salir
+            </Link>
         </div>
         <slot />
     </div>

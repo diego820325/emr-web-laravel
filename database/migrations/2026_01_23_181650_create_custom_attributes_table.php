@@ -16,6 +16,7 @@ return new class extends Migration
             $table->text('question');
             $table->foreignId('custom_attribute_type_id')->constrained();
             $table->foreignId('section_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->timestamps();
             $table->softDeletes();
         });

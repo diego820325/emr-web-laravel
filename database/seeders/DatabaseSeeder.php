@@ -22,6 +22,11 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
+            'name' => 'Test User 2',
+            'email' => 'test2@example.com',
+        ]);
+
+        $user = User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
@@ -30,48 +35,56 @@ class DatabaseSeeder extends Seeder
             'question' => 'Text',
             'custom_attribute_type_id' => CustomAttributeType::where('name', 'Text')->first()->id,
             'section_id' => Section::where('name', 'Clientes')->first()->id,
+            'user_id' => $user->id,
         ]);
 
         CustomAttribute::factory()->create([
             'question' => 'Paragraph',
             'custom_attribute_type_id' => CustomAttributeType::where('name', 'Paragraph')->first()->id,
             'section_id' => Section::where('name', 'Clientes')->first()->id,
+            'user_id' => $user->id,
         ]);
 
         CustomAttribute::factory()->create([
             'question' => 'Html',
             'custom_attribute_type_id' => CustomAttributeType::where('name', 'Html')->first()->id,
             'section_id' => Section::where('name', 'Clientes')->first()->id,
+            'user_id' => $user->id,
         ]);
 
         CustomAttribute::factory()->create([
             'question' => 'Number',
             'custom_attribute_type_id' => CustomAttributeType::where('name', 'Number')->first()->id,
             'section_id' => Section::where('name', 'Clientes')->first()->id,
+            'user_id' => $user->id,
         ]);
 
         CustomAttribute::factory()->create([
             'question' => 'Boolean',
             'custom_attribute_type_id' => CustomAttributeType::where('name', 'Boolean')->first()->id,
             'section_id' => Section::where('name', 'Clientes')->first()->id,
+            'user_id' => $user->id,
         ]);
 
         CustomAttribute::factory()->create([
             'question' => 'Date',
             'custom_attribute_type_id' => CustomAttributeType::where('name', 'Date')->first()->id,
             'section_id' => Section::where('name', 'Clientes')->first()->id,
+            'user_id' => $user->id,
         ]);
 
         CustomAttribute::factory()->create([
             'question' => 'DateTime',
             'custom_attribute_type_id' => CustomAttributeType::where('name', 'DateTime')->first()->id,
             'section_id' => Section::where('name', 'Clientes')->first()->id,
+            'user_id' => $user->id,
         ]);
 
         $dropdown = CustomAttribute::factory()->create([
             'question' => 'Dropdown Example',
             'custom_attribute_type_id' => CustomAttributeType::where('name', 'Dropdown')->first()->id,
             'section_id' => Section::where('name', 'Clientes')->first()->id,
+            'user_id' => $user->id,
         ]);
 
         CustomAttributeOption::factory()->create([
@@ -93,6 +106,7 @@ class DatabaseSeeder extends Seeder
             'question' => 'Radios Example',
             'custom_attribute_type_id' => CustomAttributeType::where('name', 'Radios')->first()->id,
             'section_id' => Section::where('name', 'Clientes')->first()->id,
+            'user_id' => $user->id,
         ]);
 
         CustomAttributeOption::factory()->create([
@@ -114,6 +128,7 @@ class DatabaseSeeder extends Seeder
             'question' => 'Checkboxes Example',
             'custom_attribute_type_id' => CustomAttributeType::where('name', 'Checkboxes')->first()->id,
             'section_id' => Section::where('name', 'Clientes')->first()->id,
+            'user_id' => $user->id,
         ]);
 
         CustomAttributeOption::factory()->create([
@@ -135,48 +150,56 @@ class DatabaseSeeder extends Seeder
             'question' => 'Text',
             'custom_attribute_type_id' => CustomAttributeType::where('name', 'Text')->first()->id,
             'section_id' => Section::where('name', 'Notas')->first()->id,
+            'user_id' => $user->id,
         ]);
 
         CustomAttribute::factory()->create([
             'question' => 'Paragraph',
             'custom_attribute_type_id' => CustomAttributeType::where('name', 'Paragraph')->first()->id,
             'section_id' => Section::where('name', 'Notas')->first()->id,
+            'user_id' => $user->id,
         ]);
 
         CustomAttribute::factory()->create([
             'question' => 'Html',
             'custom_attribute_type_id' => CustomAttributeType::where('name', 'Html')->first()->id,
             'section_id' => Section::where('name', 'Notas')->first()->id,
+            'user_id' => $user->id,
         ]);
 
         CustomAttribute::factory()->create([
             'question' => 'Number',
             'custom_attribute_type_id' => CustomAttributeType::where('name', 'Number')->first()->id,
             'section_id' => Section::where('name', 'Notas')->first()->id,
+            'user_id' => $user->id,
         ]);
 
         CustomAttribute::factory()->create([
             'question' => 'Boolean',
             'custom_attribute_type_id' => CustomAttributeType::where('name', 'Boolean')->first()->id,
             'section_id' => Section::where('name', 'Notas')->first()->id,
+            'user_id' => $user->id,
         ]);
 
         CustomAttribute::factory()->create([
             'question' => 'Date',
             'custom_attribute_type_id' => CustomAttributeType::where('name', 'Date')->first()->id,
             'section_id' => Section::where('name', 'Notas')->first()->id,
+            'user_id' => $user->id,
         ]);
 
         CustomAttribute::factory()->create([
             'question' => 'DateTime',
             'custom_attribute_type_id' => CustomAttributeType::where('name', 'DateTime')->first()->id,
             'section_id' => Section::where('name', 'Notas')->first()->id,
+            'user_id' => $user->id,
         ]);
 
         $dropdown = CustomAttribute::factory()->create([
             'question' => 'Dropdown Example',
             'custom_attribute_type_id' => CustomAttributeType::where('name', 'Dropdown')->first()->id,
             'section_id' => Section::where('name', 'Notas')->first()->id,
+            'user_id' => $user->id,
         ]);
 
         CustomAttributeOption::factory()->create([
@@ -198,6 +221,7 @@ class DatabaseSeeder extends Seeder
             'question' => 'Radios Example',
             'custom_attribute_type_id' => CustomAttributeType::where('name', 'Radios')->first()->id,
             'section_id' => Section::where('name', 'Notas')->first()->id,
+            'user_id' => $user->id,
         ]);
 
         CustomAttributeOption::factory()->create([
@@ -219,6 +243,7 @@ class DatabaseSeeder extends Seeder
             'question' => 'Checkboxes Example',
             'custom_attribute_type_id' => CustomAttributeType::where('name', 'Checkboxes')->first()->id,
             'section_id' => Section::where('name', 'Notas')->first()->id,
+            'user_id' => $user->id,
         ]);
 
         CustomAttributeOption::factory()->create([
@@ -236,6 +261,6 @@ class DatabaseSeeder extends Seeder
             'text' => 'Option 3',
         ]);
 
-        Patient::factory(100)->has(Record::factory()->count(5))->create();
+        Patient::factory(100)->for($user)->has(Record::factory()->count(5))->create();
     }
 }
