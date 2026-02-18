@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import UserLayout from '@/layouts/UserLayout.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
+import { useConfirm } from 'primevue/useconfirm';
+import { useToast } from 'primevue/usetoast';
+import { destroy } from '@/actions/App/Http/Controllers/PatientController';
+import { destroy as recordDestroy } from '@/actions/App/Http/Controllers/RecordController';
+import Toast from 'primevue/toast';
+import ConfirmDialog from 'primevue/confirmdialog';
 
 defineProps<{
     customAttributes: Record<string, any>;
@@ -57,10 +63,69 @@ const getCustomAttributeValue = (
             return 'N/A';
     }
 };
+
+const confirm = useConfirm();
+const toast = useToast();
+
+const confirmDelete = (id: number, name: string) => {
+    confirm.require({
+        message: `Estas seguro de eliminar a ${name}?`,
+        header: 'Eliminar Cliente',
+        rejectProps: {
+            label: 'Cancelar',
+            severity: 'secondary',
+            outlined: true,
+        },
+        acceptProps: {
+            label: 'Eliminar',
+            severity: 'danger',
+        },
+        accept: () => {
+            router.delete(destroy(id));
+            toast.add({
+                severity: 'info',
+                summary: 'Eliminado',
+                detail: `El cliente ${name} ha sido eliminado!`,
+                life: 3000,
+            });
+        },
+    });
+};
+
+const confirmRecordDelete = (id: number) => {
+    confirm.require({
+        message: 'Estas seguro de eliminar la nota?',
+        header: 'Eliminar Nota',
+        rejectProps: {
+            label: 'Cancelar',
+            severity: 'secondary',
+            outlined: true,
+        },
+        acceptProps: {
+            label: 'Eliminar',
+            severity: 'danger',
+        },
+        accept: () => {
+            router.delete(recordDestroy(id));
+            toast.add({
+                severity: 'info',
+                summary: 'Eliminado',
+                detail: 'La nota ha sido eliminada!',
+                life: 3000,
+            });
+        },
+    });
+};
 </script>
 
 <template>
     <UserLayout>
+        <Toast />
+        <ConfirmDialog>
+            <template #message="slotProps">
+                <div>{{ slotProps.message.message }}</div>
+            </template>
+        </ConfirmDialog>
         <div class="mx-auto flex w-1/2 flex-col items-start gap-10 p-10">
             <Link
                 :href="route('patients.index')"
@@ -112,7 +177,7 @@ const getCustomAttributeValue = (
                 </div>
                 <div class="flex justify-center gap-3">
                     <button
-                        type="submit"
+                        @click="confirmDelete(patient.id, patient.name)"
                         class="w-32 cursor-pointer rounded-lg bg-red-100 px-4 py-2 font-semibold text-red-400 hover:bg-red-500 hover:text-white"
                     >
                         Eliminar
@@ -178,13 +243,12 @@ const getCustomAttributeValue = (
                 </div>
                 <div class="flex gap-3">
                     [
-                    <Link
-                        :href="route('records.destroy', [record.id])"
-                        method="delete"
+                    <button
+                        @click="confirmRecordDelete(record.id)"
                         class="cursor-pointer rounded-lg font-semibold text-red-300 hover:text-red-500"
-                        as="button"
-                        >Eliminar</Link
                     >
+                        Eliminar
+                    </button>
                     |
                     <Link
                         :href="route('records.edit', [record.id])"

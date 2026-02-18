@@ -1,21 +1,60 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import { ref } from 'vue';
 import { FilterMatchMode } from '@primevue/core/api';
 import UserLayout from '@/layouts/UserLayout.vue';
+import { useConfirm } from 'primevue/useconfirm';
+import { useToast } from 'primevue/usetoast';
+import Toast from 'primevue/toast';
+import ConfirmDialog from 'primevue/confirmdialog';
+import { destroy } from '@/actions/App/Http/Controllers/PatientController';
 
 defineProps<{ patients: Array<Record<string, any>> }>();
 
 const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
 });
+
+const confirm = useConfirm();
+const toast = useToast();
+
+const confirmDelete = (id: number, name: string) => {
+    confirm.require({
+        message: `Estas seguro de eliminar a ${name}?`,
+        header: 'Eliminar Cliente',
+        rejectProps: {
+            label: 'Cancelar',
+            severity: 'secondary',
+            outlined: true,
+        },
+        acceptProps: {
+            label: 'Eliminar',
+            severity: 'danger',
+        },
+        accept: () => {
+            router.delete(destroy(id));
+            toast.add({
+                severity: 'info',
+                summary: 'Eliminado',
+                detail: `El cliente ${name} ha sido eliminado!`,
+                life: 3000,
+            });
+        },
+    });
+};
 </script>
 
 <template>
     <UserLayout>
+        <Toast />
+        <ConfirmDialog>
+            <template #message="slotProps">
+                <div>{{ slotProps.message.message }}</div>
+            </template>
+        </ConfirmDialog>
         <div class="container mx-auto flex flex-col gap-10 p-10">
             <div class="flex justify-between">
                 <h1 class="text-xl font-bold">Clientes</h1>
@@ -83,16 +122,17 @@ const filters = ref({
                             >
                                 Editar
                             </Link>
-                            <Link
-                                :href="
-                                    route('patients.destroy', slotProps.data.id)
+                            <button
+                                @click="
+                                    confirmDelete(
+                                        slotProps.data.id,
+                                        slotProps.data.name,
+                                    )
                                 "
-                                method="delete"
-                                as="button"
                                 class="cursor-pointer font-semibold text-blue-500 hover:text-blue-600"
                             >
                                 Borrar
-                            </Link>
+                            </button>
                         </div>
                     </template>
                 </Column>

@@ -1,16 +1,55 @@
 <script setup lang="ts">
 import UserLayout from '@/layouts/UserLayout.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
+import { useConfirm } from 'primevue/useconfirm';
+import { useToast } from 'primevue/usetoast';
+import { destroy } from '@/actions/App/Http/Controllers/CustomAttributeController';
+import Toast from 'primevue/toast';
+import ConfirmDialog from 'primevue/confirmdialog';
 
 defineProps<{
     section: Record<string, any>;
     customAttributes: Array<Record<string, any>>;
 }>();
+
+const confirm = useConfirm();
+const toast = useToast();
+
+const confirmDelete = (sectionId: number, id: number) => {
+    confirm.require({
+        message: 'Estas seguro de eliminar el campo personalizado?',
+        header: 'Eliminar Campo Personalizado',
+        rejectProps: {
+            label: 'Cancelar',
+            severity: 'secondary',
+            outlined: true,
+        },
+        acceptProps: {
+            label: 'Eliminar',
+            severity: 'danger',
+        },
+        accept: () => {
+            router.delete(destroy([sectionId, id]));
+            toast.add({
+                severity: 'info',
+                summary: 'Eliminado',
+                detail: 'El campo personalizado ha sido eliminado!',
+                life: 3000,
+            });
+        },
+    });
+};
 </script>
 
 <template>
     <UserLayout>
+        <Toast />
+        <ConfirmDialog>
+            <template #message="slotProps">
+                <div>{{ slotProps.message.message }}</div>
+            </template>
+        </ConfirmDialog>
         <div class="container mx-auto flex flex-col gap-10 p-10">
             <div class="flex justify-between">
                 <h1 class="text-xl font-bold">
@@ -67,19 +106,17 @@ defineProps<{
                             >
                                 Editar
                             </Link>
-                            <Link
-                                :href="
-                                    route('custom-attributes.destroy', [
+                            <button
+                                @click="
+                                    confirmDelete(
                                         section.id,
                                         attribute.id,
-                                    ])
+                                    )
                                 "
-                                method="delete"
-                                as="button"
                                 class="cursor-pointer font-semibold text-blue-500 hover:text-blue-600"
                             >
                                 Borrar
-                            </Link>
+                            </button>
                         </td>
                     </tr>
                 </tbody>
